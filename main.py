@@ -21,3 +21,8 @@ if __name__ == "__main__":
    myapp = MainWindow()
    myapp.show()
    sys.exit(app.exec_())
+
+
+
+
+#git测试
