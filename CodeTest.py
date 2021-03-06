@@ -1,4 +1,5 @@
 import os
+import pickle
 
 from PyQt5.QtGui import QPixmap
 
@@ -39,10 +40,26 @@ if __name__ == '__main__':
     # 每个PyQt程序必须创建一个application对象，sys.argv 参数是命令行中的一组参数
     # 注意：application在 PyQt5.QtWidgets 模块中
     # 注意：application在 PyQt4.QtGui 模块中
-    app = QApplication(sys.argv)
+    # app = QApplication(sys.argv)
     # 创建桌面窗口
-    mainWindow = MainWindow()
+    # mainWindow = MainWindow()
     # 显示桌面窗口
-    mainWindow.show()
-    sys.exit(app.exec_())
+    # mainWindow.show()
+    # sys.exit(app.exec_())
+
+    if os.path.exists(os.getcwd() + "/.datas/lastArena"):  # 获取游戏存档
+        with open(os.getcwd() + "/.datas/lastArena", 'rb') as file:  # 读取游戏存档
+
+            unpickler = pickle.Unpickler(file)
+            # dico = unpickler.load()
+            print(file.read())
+        file.close()
+
+
+
+
+
+
+
+
 

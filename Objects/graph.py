@@ -25,7 +25,7 @@ class Graph(QGraphicsScene):
         self.grid = self.getGrid()#调用下面写的getGrid()来设置网格
         self.setTiles()#调用下面写的setTiles设置贴图
 
-    #########################################################此段代码被谁调用？
+    #被window.py的MainWindow的
     def AddRobots(self, botList):
         
         """
@@ -41,7 +41,7 @@ class Graph(QGraphicsScene):
                     self.aliveBots.append(robot)
                     self.addItem(robot)#QGraphicsScene中的方法
                     robot.setPos(posList.pop())
-                    self.Parent.addRobotInfo(robot)
+                    self.Parent.addRobotInfo(robot)#这个方法是window.py中的MainWindow类的方法
                 except Exception as e:
                     print("Problem with bot file '{}': {}".format(bot, str(e)))
 

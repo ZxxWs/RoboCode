@@ -14,17 +14,13 @@ from Ui_battle import Ui_Dialog
 
 
 class Battle(QDialog, Ui_Dialog):
-    """
-    Class documentation goes here.
-    """
+
 
     def __init__(self, parent=None):
-        """
-        Constructor
-        """
+
         QDialog.__init__(self, parent)
         self.setupUi(self)
-        self.window = parent
+        self.window = parent#战斗类的（父亲）参数是window类
         botnames = []  # 一个机器人列表
         self.listBots = {}  # 一个机器人字典
         # 获取Robots文件下的文件列表
@@ -46,8 +42,7 @@ class Battle(QDialog, Ui_Dialog):
                         # dir(botModule)是将botModule模块中的标识符(属性）转化为列表
                         for name in dir(botModule):
 
-                            if botName == "T800":
-                                DeBug.debug(type(getattr(botModule, name)))
+
 
                             # getattr()这个方法最主要的作用是实现反射机制
                             # __subclasses__()函数获取类的所有子类
@@ -61,7 +56,10 @@ class Battle(QDialog, Ui_Dialog):
                         print("Problem with bot file '{}': {}".format(botFile, str(e)))
 
         for key in self.listBots.keys():
+            #向listWidget控件中添加机器人名字,其中key类型为字符串
             self.listWidget.addItem(key)
+            DeBug.debug(key,"battle","__init__")
+
 
     @pyqtSlot()
     # 添加机器人按钮函数
@@ -85,19 +83,32 @@ class Battle(QDialog, Ui_Dialog):
             key = str(self.listWidget_2.item(i).text())
             botList.append(self.listBots[key])
 
-        self.save(width, height, botList)  # 保存本次战斗
+
+        # 保存本次战斗，在开始游戏按钮中就执行保存游戏记录
+        self.save(width, height, botList)
         self.window.setUpBattle(width, height, botList)  # 调用父界面的setUpBattle函数
 
+
+    #保存游戏
     def save(self, width, height, botList):
-        dico = {}
+
+        dico = {}#游戏存档为一个字典对象，其属性为下面三个：宽、高、机器人列表
         dico["width"] = width
         dico["height"] = height
         dico["botList"] = botList
 
+        #如果项目中不存在存档目录，则创建一个
         if not os.path.exists(os.getcwd() + "/.datas/"):
             os.makedirs(os.getcwd() + "/.datas/")
 
+        #打开游戏存档文件
         with open(os.getcwd() + "/.datas/lastArena", 'wb') as file:
+
+            #构造一个pickler对象
             pickler = pickle.Pickler(file)
+
+            #pickle.dump(obj, file[, protocol]) 序列化对象，并将结果数据流写入到文件对象中。参数protocol是序列化模式，默认值为0，表示以文本的形式序列化。protocol的值还可以是1或2，表示以二进制的形式序列化。
             pickler.dump(dico)
+
+        #关闭文件
         file.close()
