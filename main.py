@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
 #sys.argv[]是用来获取命令行参数的，sys.argv[0]表示代码本身文件路径;比如在CMD命令行输入 “python test.py -help”，那么sys.argv[0]就代表“test.py”
    app = QApplication(sys.argv)
-   app.setApplicationName("Python-Robocode")
+   app.setApplicationName("Python机器人大战")
    myapp = MainWindow()
    myapp.show()
    sys.exit(app.exec_())

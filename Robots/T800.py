@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from math import cos, sin, radians
-from Objects.robot import Robot  # Import a base Robot
+from robot import Robot  # Import a base Robot
 import math
 
 #
@@ -352,7 +352,7 @@ class T800(Robot):  # Create a Robot
     def onTargetSpotted(self, botId, botName, botPos):  # NECESARY FOR THE GAME
         #keep a list of spotted enemies with enemy coordinates recorded.
         #compute destination if new bot spotted or if known bot is moving
-        # store x and y position and "date" of last seen (runcounter)°¡
+        # store x and y position and "date" of last seen (runcounter)
         if botId not in self.enemies:
             self.enemies[botId] = {}
             self.enemies[botId]["x"] = botPos.x()

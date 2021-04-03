@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>792</width>
-    <height>464</height>
+    <width>995</width>
+    <height>644</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,9 +20,22 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_4">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0,1,0,1">
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
+       <spacer name="horizontalSpacer_4">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_3" stretch="1,1,0,0">
         <item>
          <widget class="QTableWidget" name="tableWidget">
           <property name="autoFillBackground">
@@ -72,16 +85,22 @@
          </widget>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0,1,0,0,0,0">
           <item>
            <layout class="QVBoxLayout" name="verticalLayout">
-            <item>
-             <widget class="QPushButton" name="pushButton">
-              <property name="text">
-               <string>开始上一次战斗</string>
-              </property>
-             </widget>
-            </item>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout">
               <item>
@@ -113,6 +132,46 @@
             <property name="sizeHint" stdset="0">
              <size>
               <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QComboBox" name="comboBoxPlayData"/>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_5">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButtonGameStop">
+            <property name="text">
+             <string>暂停游戏</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>90</width>
               <height>20</height>
              </size>
             </property>
@@ -177,6 +236,19 @@
        </layout>
       </item>
       <item>
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
        <widget class="QGraphicsView" name="graphicsView_2">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
@@ -210,7 +282,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>792</width>
+     <width>995</width>
      <height>26</height>
     </rect>
    </property>
@@ -219,6 +291,7 @@
      <string>战斗</string>
     </property>
     <addaction name="actionNew"/>
+    <addaction name="actionDelete"/>
    </widget>
    <widget class="QMenu" name="menuRobot">
     <property name="title">
@@ -227,23 +300,8 @@
     <addaction name="actionNew_2"/>
     <addaction name="actionOpen"/>
    </widget>
-   <widget class="QMenu" name="menuHelp">
-    <property name="title">
-     <string>Help</string>
-    </property>
-    <addaction name="separator"/>
-    <addaction name="actionClass_Reference"/>
-    <addaction name="actionAbout"/>
-   </widget>
-   <widget class="QMenu" name="menu">
-    <property name="title">
-     <string>打开</string>
-    </property>
-   </widget>
    <addaction name="menuBattle"/>
    <addaction name="menuRobot"/>
-   <addaction name="menuHelp"/>
-   <addaction name="menu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionNew">
@@ -269,6 +327,14 @@
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="text">
+    <string>删除战斗</string>
+   </property>
+   <property name="toolTip">
+    <string>删除战斗</string>
    </property>
   </action>
  </widget>

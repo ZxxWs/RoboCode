@@ -25,11 +25,9 @@ class Graph(QGraphicsScene):
         self.grid = self.getGrid()#调用下面写的getGrid()来设置网格
         self.setTiles()#调用下面写的setTiles设置贴图
 
-    #被window.py的MainWindow的
+    #被window.py的MainWindow的startBattle方法调用
     def AddRobots(self, botList):
-        
-        """
-        """
+
         self.aliveBots = []#生存的机器人列表
         self.deadBots = []#死亡的机器人列表
 

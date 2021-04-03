@@ -1,5 +1,6 @@
 import os
 import pickle
+import time
 
 from PyQt5.QtGui import QPixmap
 
@@ -47,14 +48,18 @@ if __name__ == '__main__':
     # mainWindow.show()
     # sys.exit(app.exec_())
 
-    if os.path.exists(os.getcwd() + "/.datas/lastArena"):  # 获取游戏存档
-        with open(os.getcwd() + "/.datas/lastArena", 'rb') as file:  # 读取游戏存档
+    # if os.path.exists(os.getcwd() + "/.datas/lastArena"):  # 获取游戏存档
+    #     with open(os.getcwd() + "/.datas/lastArena", 'rb') as file:  # 读取游戏存档
+    #
+    #         unpickler = pickle.Unpickler(file)
+    #         # dico = unpickler.load()
+    #         print(file.read())
+    #     file.close()
 
-            unpickler = pickle.Unpickler(file)
-            # dico = unpickler.load()
-            print(file.read())
-        file.close()
+    # 获取当前时间 格式：%Y.%m.%d %H:%M:%S
+    print(time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time())))
 
+    pass
 
 
 

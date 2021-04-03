@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>572</width>
-    <height>399</height>
+    <width>815</width>
+    <height>559</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -50,7 +50,7 @@
             </font>
            </property>
            <property name="text">
-            <string>Available Bots:</string>
+            <string>可用坦克</string>
            </property>
           </widget>
          </item>
@@ -131,7 +131,7 @@
             </font>
            </property>
            <property name="text">
-            <string>Selected Bots</string>
+            <string>已选坦克</string>
            </property>
           </widget>
          </item>
@@ -184,7 +184,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Arena Size</string>
+          <string>战场大小</string>
          </property>
         </widget>
        </item>
@@ -335,7 +335,7 @@
         </font>
        </property>
        <property name="text">
-        <string>-- Start --</string>
+        <string>-- 开始 --</string>
        </property>
       </widget>
      </item>

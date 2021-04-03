@@ -1,6 +1,6 @@
 import math
 import random
-from Objects.robot import Robot
+from robot import Robot
 
 WALL_DISTANCE = 50
 FIRE_DISTANCE = 500

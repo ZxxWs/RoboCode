@@ -1,7 +1,7 @@
 #! /usr/bin/python
 #-*- coding: utf-8 -*-
 
-from Objects.robot import Robot #Import a base Robot
+from robot import Robot #Import a base Robot
 
 class Charlier(Robot): #Create a Robot
     

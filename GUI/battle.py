@@ -2,6 +2,7 @@
 
 import os
 import pickle
+import time
 
 from PyQt5.QtWidgets import QDialog
 from PyQt5.QtCore import pyqtSlot
@@ -86,6 +87,7 @@ class Battle(QDialog, Ui_Dialog):
 
         # 保存本次战斗，在开始游戏按钮中就执行保存游戏记录
         self.save(width, height, botList)
+        self.window.flashPlayData()
         self.window.setUpBattle(width, height, botList)  # 调用父界面的setUpBattle函数
 
 
@@ -101,8 +103,11 @@ class Battle(QDialog, Ui_Dialog):
         if not os.path.exists(os.getcwd() + "/.datas/"):
             os.makedirs(os.getcwd() + "/.datas/")
 
-        #打开游戏存档文件
-        with open(os.getcwd() + "/.datas/lastArena", 'wb') as file:
+        #打开游戏存档文件 并写入
+
+        # print(time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time())))
+        fileName=str(time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time())))
+        with open(os.getcwd() + "/.datas/"+fileName, 'wb') as file:
 
             #构造一个pickler对象
             pickler = pickle.Pickler(file)

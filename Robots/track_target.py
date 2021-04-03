@@ -1,5 +1,5 @@
 import math
-from Objects.robot import Robot
+from robot import Robot
 
 FIRE_DISTANCE = 500
 BULLET_POWER = 2
