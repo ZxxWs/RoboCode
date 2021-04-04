@@ -1,5 +1,5 @@
 import math
-from robot import Robot
+from  Objects.robot import Robot
 
 
 MOVE_STEP = 5

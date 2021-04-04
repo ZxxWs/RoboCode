@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from math import cos, sin, radians
-from robot import Robot  # Import a base Robot
+from  Objects.robot import Robot  # Import a base Robot
 import math
 
 #
