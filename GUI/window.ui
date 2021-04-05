@@ -47,31 +47,6 @@
           <attribute name="horizontalHeaderStretchLastSection">
            <bool>false</bool>
           </attribute>
-          <column>
-           <property name="text">
-            <string>Name</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>1st</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>2nd</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>3rd</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Points</string>
-           </property>
-          </column>
          </widget>
         </item>
         <item>

@@ -14,8 +14,11 @@ from GUI.outPrint import outPrint
 
 class Graph(QGraphicsScene):
     
-    def __init__(self,  parent, width,  height):
+    def __init__(self,parent, width,  height):
         QGraphicsScene.__init__(self,  parent)
+
+        self.placeList=[]#排名列表
+
         self.setSceneRect(0, 0, width, height)#QGraphicsScene中的方法
         self.Parent = parent
 
@@ -30,7 +33,7 @@ class Graph(QGraphicsScene):
 
         self.aliveBots = []#生存的机器人列表
         self.deadBots = []#死亡的机器人列表
-
+        self.allBots=botList#所有的机器人，
         try:
             posList = random.sample(self.grid, len(botList))
             for bot in botList:
@@ -42,7 +45,6 @@ class Graph(QGraphicsScene):
                     self.Parent.addRobotInfo(robot)#这个方法是window.py中的MainWindow类的方法
                 except Exception as e:
                     print("Problem with bot file '{}': {}".format(bot, str(e)))
-
             self.Parent.battleMenu.close()
         except ValueError:
             QMessageBox.about(self.Parent, "Alert", "Too many Bots for the map's size!")
@@ -50,8 +52,7 @@ class Graph(QGraphicsScene):
             pass
 
     #战斗结束方法，被robot调用
-    #------------------------------------------------------------------未细看
-    def  battleFinished(self):
+    def battleFinished(self):
         print("battle terminated")
         try:
             self.deadBots.append(self.aliveBots[0])
@@ -59,8 +60,18 @@ class Graph(QGraphicsScene):
         except IndexError:
             pass
         j = len(self.deadBots)
-        
-        
+
+
+        # print("Graph.battleFinished.placeList:",end="")
+        # for i in len(self.aliveBots):
+            # self.placeList.append(self.__repr__(self.aliveBots[i]))
+
+
+        self.Parent.allPlace.append(self.placeList)
+
+
+
+        #统计战斗分数
         for i in range(j):
             print("N° {}:{}".format(j - i, self.deadBots[i]))
             if j-i == 1: #first place
@@ -71,7 +82,8 @@ class Graph(QGraphicsScene):
                 self.Parent.statisticDico[repr(self.deadBots[i])].third += 1
                 
             self.Parent.statisticDico[repr(self.deadBots[i])].points += i
-                
+
+
         self.Parent.chooseAction()       
 
     #设置瓷砖的方法(设置贴图方法)

@@ -25,6 +25,9 @@ class Robot(QGraphicsItemGroup):
     def __init__(self, mapSize, parent, repr):
         QGraphicsItemGroup.__init__(self)
 
+        #公有属性
+        self.gamePlace=1
+
         # 私有属性
         self.__mapSize = mapSize
         self.__parent = parent
@@ -163,6 +166,9 @@ class Robot(QGraphicsItemGroup):
             self.a = time.time()
         """
         if self.__health <= 0:
+            self.gamePlace=len(self.__parent.aliveBots)
+            # print("Robot.advance:"+str(self.gamePlace))
+            self.__parent.placeList.append(self.__repr__())
             self.__death()
 
         if self.__currentAnimation == []:
@@ -237,8 +243,6 @@ class Robot(QGraphicsItemGroup):
                     if item.robot.__physics.animation.name != "target":
                         # targetSpotted
                         self.__targetSeen(item)
-
-
 
     # -------------------------------------------炮膛------------------------------------------------------
     def gunTurn(self, angle):
@@ -588,6 +592,9 @@ class Robot(QGraphicsItemGroup):
             traceback.print_exc()
             exit(-1)
         self.__parent.removeItem(self)
+
+
+
         if len(self.__parent.aliveBots) <= 1:#如果生存的机器人小于等于1，则结束战斗
             self.__parent.battleFinished()
 
