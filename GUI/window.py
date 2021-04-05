@@ -26,37 +26,38 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         QMainWindow.__init__(self, parent)
         self.setupUi(self)
-        self.countBattle = 0  # 参加战斗的机器人个数
+        self.battledCount = 0  # 已经战斗次数
         self.timer = QTimer()  # QTimer是Qt中的一个定时器类，参考文档：https://doc.qt.io/qtforpython-5/PySide2/QtCore/QTimer.html
-        self.gameStopTag = False
+        self.gameCanStopTag = False
         # tableWidget是计分面板控件
         self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # 计分板水平表头，设置格式为均匀拉直表头
         self.tableWidget.hide()  # 隐藏计分面板控件
-        self.pushButtonGameStop.hide()#暂停游戏按钮隐藏
+        self.pushButtonGameStop.hide()  # 暂停游戏按钮隐藏
 
+        self.labelBattleCount.hide()#隐藏战斗次数label
         # 刷新游戏存档的锁，如果为True，则不会执行on_comboBoxPlayData_currentIndexChanged()
         self.__flashPlayDataTag = False
         self.flashPlayData()
 
         self.__initUIStyle()
 
-    # 重新开始战斗
-    @pyqtSlot()
-    def on_pushButton_clicked(self):
-
-        if os.path.exists(os.getcwd() + "/.datas/lastArena"):  # 获取游戏存档
-            with open(os.getcwd() + "/.datas/lastArena", 'rb') as file:  # 读取游戏存档
-                unpickler = pickle.Unpickler(file)  # 使用pickle包，读取存档
-                dico = unpickler.load()  # dico是一个字典对象
-            file.close()
-        else:
-            print("No last arena found.")
-
-        # 调用下面的setUpBattle方法
-        self.setUpBattle(dico["width"], dico["height"], dico["botList"])
+    # # 重新开始战斗
+    # @pyqtSlot()
+    # def on_pushButton_clicked(self):
+    #
+    #     if os.path.exists(os.getcwd() + "/.datas/lastArena"):  # 获取游戏存档
+    #         with open(os.getcwd() + "/.datas/lastArena", 'rb') as file:  # 读取游戏存档
+    #             unpickler = pickle.Unpickler(file)  # 使用pickle包，读取存档
+    #             dico = unpickler.load()  # dico是一个字典对象
+    #         file.close()
+    #     else:
+    #         print("No last arena found.")
+    #
+    #     # 调用下面的setUpBattle方法
+    #     self.setUpBattle(dico["width"], dico["height"], dico["botList"])
 
     # 本函数被battle.py中的__init__()调用，也被上面的“重新开始战斗”调用
-    def setUpBattle(self, width, height, botList):
+    def setUpBattle(self, width, height, botList,battleCount):
 
         self.tableWidget.clearContents()  # 清理计分板的内容
         self.tableWidget.hide()  # 隐藏计分板
@@ -65,22 +66,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.width = width
         self.height = height
         self.botList = botList
+        self.battleCount=battleCount
 
         self.statisticDico = {}  # 初始化一个计分数据结构（字典类型）
         for bot in botList:
             # 填充字典计分器，键=机器人的类名，值=一个统计对象（statistic类）
             self.statisticDico[self.repres(bot)] = statistic()
+
+
+        self.pushButtonGameStop.show()  # 暂停游戏按钮显示
+        self.pushButtonGameStop.setText("暂停游戏")
+        self.gameCanStopTag = True
+        self.labelBattleCount.show()
+
         self.startBattle()  # 执行下面的开始游戏逻辑
 
-        self.pushButtonGameStop.show()#暂停游戏按钮显示
-
-
-    # 游戏开始逻辑
+    # 开始一次战斗逻辑
     def startBattle(self):
 
         try:
             self.timer.timeout.disconnect(self.scene.advance)
-
             '''
             关于del:
             由于python都是引用，而python有GC机制，所以，del语句作用在变量上，而不是数据对象上
@@ -91,8 +96,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         except:
             pass
 
+
+
         self.timer = QTimer()
-        self.countBattle += 1
+        self.battledCount += 1
+        self.labelBattleCount.setText("战斗次数："+str(self.battledCount)+"/"+str(self.battleCount))#设置当下的战斗次数label
         self.sceneMenu = QGraphicsScene()  # sceneMenu为一个qt的场景对象
         self.graphicsView_2.setScene(self.sceneMenu)  # graphicsView_2是UI中的一个graphicsView类型控件，(右侧显示游戏细节信息的控件
         self.scene = Graph(self, self.width, self.height)  # 设置场景的具体宽高
@@ -107,6 +115,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def on_horizontalSlider_valueChanged(self, value):
         self.timer.setInterval((value ** 2) / 100.0)
 
+    #战斗存档显示控件内容发生变化的处理方法
     @pyqtSlot(str)
     def on_comboBoxPlayData_currentIndexChanged(self, data):
 
@@ -122,7 +131,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 file.close()
 
                 # 调用 setUpBattle方法
-                self.setUpBattle(dico["width"], dico["height"], dico["botList"])
+                self.setUpBattle(dico["width"], dico["height"], dico["botList"],dico["battleCount"])
 
             else:
                 print("No last arena found.")
@@ -130,7 +139,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @pyqtSlot()
     # 点击新建战斗菜单
     def on_actionNew_triggered(self):
-
         self.battleMenu = Battle(self)
         self.battleMenu.show()
 
@@ -159,15 +167,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @pyqtSlot()
     def on_pushButtonGameStop_clicked(self):
         print("执行on_pushButtonGameStop_clicked")
-        if not self.gameStopTag:
+        if self.gameCanStopTag:
 
             self.timer.stop()
             self.pushButtonGameStop.setText("继续游戏")
-            self.gameStopTag = True
+            self.gameCanStopTag = False
         else:
             self.timer.start()
             self.pushButtonGameStop.setText("暂停游戏")
-            self.gameStopTag = False
+            self.gameCanStopTag = True
         pass
 
     # ------------------------作用未知，被本类的startBattle方法最后一行调用
@@ -180,6 +188,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     # 添加机器人信息，被graph.py中的Graph类的AddRobots()方法调用，
     # 此处的robot参数是./Robots文件下具体的机器人类
     def addRobotInfo(self, robot):
+
         DeBug.debug(robot, "MainWindow", "addRobotInfo")
         self.sceneMenu.setSceneRect(0, 0, 170, 800)  # 设置机器人细节展示控件的尺寸，左上角是0，0坐标，宽170，高800
         rb = RobotInfo()
@@ -196,7 +205,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         p.setPos(0, (l - 1) * 80)  # 设置当前机器人信息UI的位置
 
     def chooseAction(self):
-        if self.countBattle >= self.spinBox.value():
+        # if self.battledCount >= self.spinBox.value():
+        if self.battledCount >= self.battleCount:
             "Menu Statistic"
             self.graphicsView.hide()
             self.tableWidget.show()
@@ -210,11 +220,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.tableWidget.setItem(i, 4, QTableWidgetItem(str(value.points)))
                 i += 1
 
-            self.countBattle = 0
+            self.battledCount = 0
             self.timer.stop()
 
             self.pushButtonGameStop.setText("暂停游戏")
             self.pushButtonGameStop.hide()  # 暂停游戏按钮隐藏
+
         else:
             self.startBattle()
 
@@ -231,7 +242,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         return repres[1].replace("'>", "")
 
-    # 用于刷新战斗记录
+    # 用于刷新战斗记录存档
     def flashPlayData(self):
 
         # 如果项目中不存在存档目录，则创建一个
@@ -251,11 +262,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __initUIStyle(self):
 
         self.setWindowState(Qt.WindowMaximized)
-        self.setStyleSheet("QMainWindow{background-image:url(ArtResource/backgroudBlack.png)}"
-                           "QMainWindow{font-size:35px;font-family:'楷体'}"
+        self.setStyleSheet("QMainWindow{background-image:url(ArtResource/backgroudBlack.png)}" 
 
-                           "QDialog{background-image:url(ArtResource/backgroudBlack.png)}"
-
+                           "QDialog{background-image:url(ArtResource/backgroudBlack.png)}" 
+                           
                            "QLabel{background-color:rgb(0,0,0,155)}"
                            "QLabel{color:#F5FFFA}"
                            "QLabel{border-radius: 17px}"
@@ -273,7 +283,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                            "QPushButton{color:#F5FFFA}"
 
                            "QTextEdit{font-size:17px;font-family:'楷体'}"
-                           
+
                            "QLineEdit{font-size:17px;font-family:'楷体'}"
                            "QLineEdit{border-radius: 4px}"
+                           
+                           "QTableWidget{background:rgb(200,200,200,200);border-radius:17px;}"
+                           "QTableWidget{font-size:35px;font-family:'楷体'}"
+                           
+                           "QListWidget{background:rgb(200,200,200,200);border-radius:17px;}"
+                           "QListWidget{font-size:35px;font-family:'楷体'}"
                            )

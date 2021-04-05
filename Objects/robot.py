@@ -427,6 +427,7 @@ class Robot(QGraphicsItemGroup):
             l.append(dic)
         return l
 
+    #向细节面板加内容的方法
     def rPrint(self, msg):
         self.info.out.add(str(msg))
 
