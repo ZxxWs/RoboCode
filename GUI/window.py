@@ -212,8 +212,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     try:
                         place=count-self.allPlace[j].index(self.repres(self.botList[i]))
                     except:
-                        place=1
-
+                        # place=1
+                        pass
                     self.tableWidget.setItem(j,i, QTableWidgetItem(str(place)))
 
             self.battledCount = 0

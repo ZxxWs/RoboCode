@@ -61,11 +61,8 @@ class Graph(QGraphicsScene):
             pass
         j = len(self.deadBots)
 
-
-        # print("Graph.battleFinished.placeList:",end="")
-        # for i in len(self.aliveBots):
-            # self.placeList.append(self.__repr__(self.aliveBots[i]))
-
+        for i in range(len(self.aliveBots)):
+            self.placeList.append(repr(self.aliveBots[i]))
 
         self.Parent.allPlace.append(self.placeList)
 
