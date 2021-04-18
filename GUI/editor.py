@@ -16,11 +16,20 @@ class Editor(QDialog, Ui_Editor):
 
         # 新建机器人
         if fileName == "":
-            None
+
+            #将Objects文件夹下的template代码读取后展示（机器人模板
+            print(os.getcwd()+"\\Objects\\template.py")
+            with open(os.getcwd()+"\\Objects\\template.py", 'r',encoding='utf-8') as newFile:
+                # pass
+                con = newFile.read()
+                # con="asdsa"
+                self.textEdit.setText(con)
+
+
         # 打开机器人
         else:
             self.lineEdit.setText(fileName[:-3])
-            with open(os.getcwd()+"/Robots/"+fileName, 'r',encoding='GBK') as openFile:
+            with open(os.getcwd()+"/Robots/"+fileName, 'r',encoding='utf-8') as openFile:
                 con = openFile.read()
                 self.textEdit.setText(con)
 

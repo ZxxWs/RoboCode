@@ -3,8 +3,8 @@
 
 """
 动画类
-属性：自身名称、一个列表
-被physics类调用
+    属性：自身名称、一个列表
+    被physics类调用
 """
 
 class animation():

@@ -1,20 +1,24 @@
 #! /usr/bin/python
 #-*- coding: utf-8 -*-
 
-from  Objects.robot import Robot #Import a base Robot
+from  Objects.robot import Robot
 import math
 
-class Target(Robot): #Create a Robot
-    
-    def init(self):    #To initialyse your robot
-        
-        
-        #Set the bot color in RGB
+
+'''
+一个靶子机器人 
+'''
+class Target(Robot):
+
+    #初始化机器人
+    def init(self):
+        #设置坦克的颜色（炮膛、雷达、子弹
         self.setColor(255, 0, 0)
         self.setGunColor(255, 0, 0)
         self.setRadarColor(255, 0, 0)
         self.setBulletsColor(255, 0, 0)
-        
+
+        #需要先设置雷达为可见，再设置雷达类型
         self.radarVisible(True) # if True the radar field is visible
         
         #get the map size

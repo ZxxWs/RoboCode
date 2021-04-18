@@ -1,5 +1,3 @@
-
-
 import time, os, math
 import traceback
 
@@ -12,7 +10,6 @@ from bullet import Bullet
 from radarField import radarField
 from animation import animation
 
-
 '''
 QGraphicsItemGroup继承QGraphicsItem类
 Robot类：
@@ -20,13 +17,15 @@ Robot类：
     
 
 '''
+
+
 class Robot(QGraphicsItemGroup):
 
     def __init__(self, mapSize, parent, repr):
         QGraphicsItemGroup.__init__(self)
 
-        #公有属性
-        self.gamePlace=1
+        # 公有属性
+        self.gamePlace = 1
 
         # 私有属性
         self.__mapSize = mapSize
@@ -35,23 +34,23 @@ class Robot(QGraphicsItemGroup):
         self.__repr = repr
 
         self.__gunLock = "free"
-        self.__radarLock = "Free"
+        self.__radarLock = "Free"#字面意思是雷达锁
 
         # 两个动画对象、一个physics对象
         self.__runAnimation = animation("run")
         self.__targetAnimation = animation("target")
-        self.__physics = physics(self.__runAnimation)#一个physics对象
+        self.__physics = physics(self.__runAnimation)  # 一个physics对象
 
-        #--------------------------------------未懂(mask 图画颜色)------------------------------------------
+        # --------------------------------------未懂(mask 图画颜色)--------------------------
         self.maskColor = QColor(0, 255, 255)
-        self.gunMaskColor = QColor(0, 255, 255)#炮膛颜色
-        self.radarMaskColor = QColor(0, 255, 255)#雷达颜色
+        self.gunMaskColor = QColor(0, 255, 255)  # 炮膛颜色
+        self.radarMaskColor = QColor(0, 255, 255)  # 雷达颜色
 
         # 加载图片
         self.__base = QGraphicsPixmapItem()
         self.__base.pixmap = QPixmap(os.getcwd() + "/robotImages/baseGrey.png")
         self.__base.setPixmap(self.__base.pixmap)
-        self.addToGroup(self.__base)#本类中第一次执行addToGroup
+        self.addToGroup(self.__base)  # 本类中第一次执行addToGroup
         self.__baseWidth = self.__base.boundingRect().width()
         self.__baseHeight = self.__base.boundingRect().height()
 
@@ -67,6 +66,10 @@ class Robot(QGraphicsItemGroup):
         x = self.__base.boundingRect().center().x()
         y = self.__base.boundingRect().center().y()
         self.__gun.setPos(x - self.__gunWidth / 2.0, y - self.__gunHeight / 2.0)
+
+
+
+        #--------------------------雷达初始化-----------------------------
 
         # 加载雷达图片
         self.__radar = QGraphicsPixmapItem()
@@ -119,9 +122,11 @@ class Robot(QGraphicsItemGroup):
         self.addToGroup(self.__largeRadarField)
         self.addToGroup(self.__thinRadarField)
 
+        #一个坦克上有三个雷达范围，但初始化的时候都是隐藏的
         self.__largeRadarField.hide()
         self.__thinRadarField.hide()
         self.__roundRadarField.hide()
+        #--------------------------雷达初始化（上-----------------------------
 
         # 设置坦克颜色：RGB
         self.setColor(0, 200, 100)
@@ -148,7 +153,7 @@ class Robot(QGraphicsItemGroup):
         self.__radar.setTransformOriginPoint(x, y)
 
         # add self items in items to avoid collisions
-        #添加self.item到items中以防冲突
+        # 添加self.item到items中以防冲突
         self.__items = set([self, self.__base, self.__gun, self.__radar, self.__radarField, self.__largeRadarField,
                             self.__thinRadarField, self.__roundRadarField])
 
@@ -166,7 +171,7 @@ class Robot(QGraphicsItemGroup):
             self.a = time.time()
         """
         if self.__health <= 0:
-            self.gamePlace=len(self.__parent.aliveBots)
+            self.gamePlace = len(self.__parent.aliveBots)
             # print("Robot.advance:"+str(self.gamePlace))
             self.__parent.placeList.append(self.__repr__())
             self.__death()
@@ -244,7 +249,8 @@ class Robot(QGraphicsItemGroup):
                         # targetSpotted
                         self.__targetSeen(item)
 
-    # -------------------------------------------炮膛------------------------------------------------------
+    # -------------------------------------------炮膛-------------------------------------------
+    #炮膛转向
     def gunTurn(self, angle):
         s = 1
         if angle < 0:
@@ -259,6 +265,7 @@ class Robot(QGraphicsItemGroup):
     def lockGun(self, part):
         self.__gunLock = part
 
+    #设置炮膛颜色
     def setGunColor(self, r, g, b):
         color = QColor(r, g, b)
         mask = self.__gun.pixmap.createMaskFromColor(self.gunMaskColor, 1)
@@ -269,8 +276,8 @@ class Robot(QGraphicsItemGroup):
         self.__gun.setPixmap(self.__gun.pixmap)
         self.gunMaskColor = QColor(r, g, b)
 
-    # -------------------------------------------车身-----------------------------------------------------
-
+    # -------------------------------------------车身（下-------------------------------------
+    #车身的移动方式
     def move(self, distance):
         s = 1
         if distance < 0:
@@ -282,6 +289,7 @@ class Robot(QGraphicsItemGroup):
         for i in range(steps):
             self.__physics.move.append(s * self.__physics.step)
 
+    #转向方法，传入的参数为一个角度（类型未知
     def turn(self, angle):
         s = 1
         if angle < 0:
@@ -293,6 +301,7 @@ class Robot(QGraphicsItemGroup):
         for i in range(steps):
             self.__physics.turn.append(s * self.__physics.step)
 
+    #设置车身颜色
     def setColor(self, r, g, b):
         color = QColor(r, g, b)
         mask = self.__base.pixmap.createMaskFromColor(self.maskColor, 1)
@@ -303,9 +312,15 @@ class Robot(QGraphicsItemGroup):
         self.__base.setPixmap(self.__base.pixmap)
         self.maskColor = QColor(r, g, b)
 
-    # ---------------------------------------------雷达--------------------------------------------
+    # ---------------------------------------------雷达（下-----------------------------
+
 
     def setRadarField(self, form):
+        '''
+            设置《雷达范围》类型
+            类型：normal、large、thin、round
+            根据传入的类型来设置显示的类型（其他类型的就hide
+        '''
         if form.lower() == "normal":
             self.__radarField.show()
             self.__largeRadarField.hide()
@@ -330,6 +345,7 @@ class Robot(QGraphicsItemGroup):
     def lockRadar(self, part):
         self.__radarLock = part
 
+    #雷达转向
     def radarTurn(self, angle):
         s = 1
         if angle < 0:
@@ -341,6 +357,7 @@ class Robot(QGraphicsItemGroup):
         for i in range(steps):
             self.__physics.radarTurn.append(s * self.__physics.step)
 
+    #设置雷达颜色（雷达罩的颜色，在坦克车身上的
     def setRadarColor(self, r, g, b):
         color = QColor(r, g, b)
         mask = self.__radar.pixmap.createMaskFromColor(self.radarMaskColor, 1)
@@ -351,13 +368,14 @@ class Robot(QGraphicsItemGroup):
         self.__radar.setPixmap(self.__radar.pixmap)
         self.radarMaskColor = QColor(r, g, b)
 
+    #设置雷达是否可见，将几个雷达类型都设置为统一的
     def radarVisible(self, bol):
         self.__radarField.setVisible(bol)
         self.__roundRadarField.setVisible(bol)
         self.__thinRadarField.setVisible(bol)
         self.__largeRadarField.setVisible(bol)
 
-    # ------------------------------------------------子弹---------------------------------------
+    # ------------------------------------------------子弹（下------------------------------------
 
     def fire(self, power):
         # asynchronous fire
@@ -369,6 +387,7 @@ class Robot(QGraphicsItemGroup):
         bullet.hide()
         return id(bullet)
 
+    #制造子弹
     def makeBullet(self, bullet):
         bullet.show()
         pos = self.pos()
@@ -386,24 +405,25 @@ class Robot(QGraphicsItemGroup):
         self.__changeHealth(self, -bullet.power)
         return id(bullet)
 
+    #设置子弹颜色
     def setBulletsColor(self, r, g, b):
         self.bulletColor = QColor(r, g, b)
 
-    # ---------------------------------------整体的方法---------------------------------------
+    # ---------------------------------------整体的方法（下---------------------------------------
     def stop(self):
         self.__physics.newAnimation()
 
-    #获取地图尺寸
+    # 获取地图尺寸
     def getMapSize(self):
         return self.__mapSize
 
-    #获取位置
+    # 获取位置
     def getPosition(self):
         p = self.pos()
         r = self.__base.boundingRect()
         return QPointF(p.x() + r.width() / 2, p.y() + r.height() / 2)
 
-    #获取炮膛朝向
+    # 获取炮膛朝向
     def getGunHeading(self):
         angle = self.__gun.rotation()
         # if angle > 360:
@@ -411,11 +431,11 @@ class Robot(QGraphicsItemGroup):
         #     angle = angle - (360*a)
         return angle
 
-    #获取朝向
+    # 获取朝向
     def getHeading(self):
         return self.__base.rotation()
 
-    #获取雷达朝向
+    # 获取雷达朝向
     def getRadarHeading(self):
         return self.__radar.rotation()
 
@@ -423,7 +443,7 @@ class Robot(QGraphicsItemGroup):
         self.__physics.reset()
         self.__currentAnimation = []
 
-    #获取敌人
+    # 获取敌人
     def getEnemiesLeft(self):
         l = []
         for bot in self.__parent.aliveBots:
@@ -431,7 +451,7 @@ class Robot(QGraphicsItemGroup):
             l.append(dic)
         return l
 
-    #向细节面板加内容的方法
+    # 向细节面板加内容的方法
     def rPrint(self, msg):
         self.info.out.add(str(msg))
 
@@ -441,8 +461,8 @@ class Robot(QGraphicsItemGroup):
             self.__physics.move.append(0)
         self.stop()
 
-#-----------------------------------------下面为私有方法------------------------------------------
-    # Calculus & Private Methods
+    # -----------------------------------------下面为私有方法------------------------------------------
+
 
     def __getTranslation(self, step):
         angle = self.__base.rotation()
@@ -593,9 +613,7 @@ class Robot(QGraphicsItemGroup):
             exit(-1)
         self.__parent.removeItem(self)
 
-
-
-        if len(self.__parent.aliveBots) <= 1:#如果生存的机器人小于等于1，则结束战斗
+        if len(self.__parent.aliveBots) <= 1:  # 如果生存的机器人小于等于1，则结束战斗
             self.__parent.battleFinished()
 
     def __repr__(self):

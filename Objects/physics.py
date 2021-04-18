@@ -40,14 +40,16 @@ class physics():
     #将动画类的列表翻转
     def reverse(self):
         self.animation.list.reverse()     
-        
+
+    #设置新的动画
     def newAnimation(self): 
         currentList = self.makeAnimation()
         if currentList != []:
             self.animation.list.append(currentList)
             self.clearAnimation()
         
-       
+
+    #设置动画方法
     def makeAnimation(self ,  a = None):
 
         for i in range(max(len(self.move), len(self.turn), len(self.gunTurn), len(self.radarTurn), len(self.fire) )):

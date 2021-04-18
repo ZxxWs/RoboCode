@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QGraphicsItemGroup, QGraphicsPolygonItem, QGraphicsE
 from PyQt5.QtGui import QPolygonF, QColor, QBrush, QPen
 
 '''
-雷达范围类
+雷达范围类（而不是雷达，雷达指的是车身上的雷达罩子
 方法：
     __init__
     setVisible：设置雷达的可见性
@@ -17,14 +17,13 @@ from PyQt5.QtGui import QPolygonF, QColor, QBrush, QPen
 
 class radarField(QGraphicsItemGroup):#继承Qt中的QGraphicsItemGroup类
 
-
     '''
-
     rType：雷达类型：范围、射线
-
     类中的item属于自定义的属性，不是父类的属性
     '''
+
     def __init__(self, qPointList, bot, rType):#
+
         QGraphicsItemGroup.__init__(self)
         self.rType = rType
 
@@ -58,6 +57,3 @@ class radarField(QGraphicsItemGroup):#继承Qt中的QGraphicsItemGroup类
         pen = QPen(color)#QPen（钢笔）是一个基本的图形对象，用于绘制直线，曲线或者给轮廓画出矩形，椭圆形，多边形及其他形状
         self.item.setBrush(brush)
         self.item.setPen(pen)
-    
-        
-        

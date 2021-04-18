@@ -20,7 +20,6 @@ class Graph(QGraphicsScene):
         QGraphicsScene.__init__(self,  parent)
 
         self.placeList=[]#排名列表
-
         self.setSceneRect(0, 0, width, height)#QGraphicsScene中的方法
         self.Parent = parent
 
