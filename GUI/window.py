@@ -22,6 +22,7 @@ from Objects.statistic import statistic
 
 class MainWindow(QMainWindow, Ui_MainWindow):
 
+    #主界面的构造函数
     def __init__(self, parent=None):
 
         QMainWindow.__init__(self, parent)
@@ -42,7 +43,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.flashPlayData()
         self.__initUIStyle()
 
-    # 本函数被battle.py中的__init__()调用，也被上面的“重新开始战斗”调用
+    #开始一大场战斗
     def setUpBattle(self, width, height, botList, battleCount):
 
         self.tableWidget.clearContents()  # 清理计分板的内容
@@ -68,7 +69,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.startBattle()  # 执行下面的开始游戏逻辑
 
-    # 开始一次战斗逻辑
+    # 开始单独一次战斗逻辑
     def startBattle(self):
 
         try:
@@ -96,8 +97,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.timer.start((self.horizontalSlider.value() ** 2) / 100.0)
         self.resizeEvent()
 
+
+    #游戏速度条控制
     @pyqtSlot(int)
     def on_horizontalSlider_valueChanged(self, value):
+        #可以理解为设置系统时间帧长
         self.timer.setInterval((value ** 2) / 100.0)
 
     # 战斗存档显示控件内容发生变化的处理方法
@@ -109,6 +113,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if data == "选择记录的战斗":
             return
         else:
+            #读取已经存在的存档，并开始新的游戏
             if os.path.exists(os.getcwd() + "/.datas/" + data):  # 获取游戏存档
                 with open(os.getcwd() + "/.datas/" + data, 'rb') as file:  # 读取游戏存档
                     unpickler = pickle.Unpickler(file)  # 使用pickle包，读取存档
@@ -116,6 +121,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 file.close()
 
                 # 调用 setUpBattle方法
+                #新开一个战斗（一大个
                 self.setUpBattle(dico["width"], dico["height"], dico["botList"], dico["battleCount"])
 
             else:
@@ -151,10 +157,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     # 暂停游戏按钮函数
     @pyqtSlot()
     def on_pushButtonGameStop_clicked(self):
+
         print("执行on_pushButtonGameStop_clicked")
         if self.gameCanStopTag:
 
-            self.timer.stop()
+            self.timer.stop()#暂停游戏
             self.pushButtonGameStop.setText("继续游戏")
             self.gameCanStopTag = False
         else:
@@ -172,11 +179,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def addRobotInfo(self, robot):
         '''
-
         添加机器人信息，被graph.py中的Graph类的AddRobots()方法调用，
         :param robot: ./Robots文件下具体的机器人类
         '''
-        DeBug.debug(robot, "MainWindow", "addRobotInfo")
+        DeBug.debug(robot, "MainWindow", "addRobotInfo")#自己写的调试的类
         self.sceneMenu.setSceneRect(0, 0, 170, 800)  # 设置机器人细节展示控件的尺寸，左上角是0，0坐标，宽170，高800
         rb = RobotInfo()
         rb.pushButton.setText(str(robot))  # 设置机器人信息UI中的按钮文字
@@ -191,20 +197,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.sceneMenu.setSceneRect(0, 0, 170, l * 80)  # 设置机器人细节展示控件的尺寸，左上角是0，0坐标，这里的l*80是具体的场景尺寸
         p.setPos(0, (l - 1) * 80)  # 设置当前机器人信息UI的位置
 
+    #单场游戏结束判断
     def chooseAction(self):
 
+        #如果已经战斗次数>=总的战斗次数
         if self.battledCount >= self.battleCount:
             "Menu Statistic"
-            self.graphicsView.hide()
-            self.tableWidget.show()
-            self.tableWidget.clear()
-            self.tableWidget.setColumnCount(len(self.botList))
+
+            self.graphicsView.hide()#隐藏graphicsView控件
+            self.tableWidget.show()#显示tableWidget控件
+            self.tableWidget.clear()#清空计分板
+            self.tableWidget.setColumnCount(len(self.botList))#设置计分板的行数、列数
             self.tableWidget.setRowCount(self.battleCount)
 
             count=len(self.botList)
             for i in range(len(self.botList)):
                 #设置表头
                 self.tableWidget.setHorizontalHeaderItem(i, QTableWidgetItem(self.repres(self.botList[i])))
+
+                #将二维数组allPlace填充到计分板上
                 for j in range(len(self.allPlace)):
 
                     self.tableWidget.setVerticalHeaderItem(j, QTableWidgetItem("第"+str(j+1)+"局战斗排名"))
@@ -218,9 +229,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             self.battledCount = 0
             self.timer.stop()
-
+            # 暂停游戏按钮隐藏
             self.pushButtonGameStop.setText("暂停游戏")
-            self.pushButtonGameStop.hide()  # 暂停游戏按钮隐藏
+            self.pushButtonGameStop.hide()
 
         else:
             self.startBattle()
@@ -247,6 +258,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             os.makedirs(os.getcwd() + "/.datas/")
 
         dataList = os.listdir(os.getcwd() + "/.datas/")
+        #控件
         self.comboBoxPlayData.clear()
         self.comboBoxPlayData.addItem("选择记录的战斗")
         self.comboBoxPlayData.addItems(dataList)
@@ -256,7 +268,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     # 初始化界面的UI风格
     def __initUIStyle(self):
 
-        self.setWindowState(Qt.WindowMaximized)
+        self.setWindowState(Qt.WindowMaximized)#最大化界面
         self.setStyleSheet("QMainWindow{background-image:url(ArtResource/backgroudBlack.png)}"
 
                            "QDialog{background-image:url(ArtResource/backgroudBlack.png)}"

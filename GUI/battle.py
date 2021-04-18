@@ -11,7 +11,7 @@ from DeBug import DeBug
 from Objects.robot import Robot
 from Ui_battle import Ui_Dialog
 
-'''用于战斗的创建、打开以及保存等'''
+'''用于战斗的创建'''
 
 
 class Battle(QDialog, Ui_Dialog):
@@ -87,13 +87,13 @@ class Battle(QDialog, Ui_Dialog):
 
         # 保存本次战斗，在开始游戏按钮中就执行保存游戏记录
         self.save(width, height, botList, battleCount)
-        self.window.flashPlayData()
-        self.window.setUpBattle(width, height, botList,battleCount)  # 调用父界面的setUpBattle函数
+        self.window.flashPlayData()#用于刷新主界面的游戏记录
+        self.window.setUpBattle(width, height, botList,battleCount)  # 调用主界面的setUpBattle函数、设置战斗
 
     # 保存游戏
     def save(self, width, height, botList, battleCount):
 
-        dico = {}  # 游戏存档为一个字典对象，其属性为下面三个：宽、高、机器人列表
+        dico = {}  # 游戏存档为一个字典对象，其属性为下面四个：宽、高、机器人列表、战斗次数
         dico["width"] = width
         dico["height"] = height
         dico["botList"] = botList
@@ -105,6 +105,7 @@ class Battle(QDialog, Ui_Dialog):
 
         # 打开游戏存档文件 并写入
         # print(time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time())))
+        #文件名为当前时间
         fileName = str(time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time())))
         with open(os.getcwd() + "/.datas/" + fileName, 'wb') as file:
             # 构造一个pickler对象

@@ -12,8 +12,10 @@ from robot import Robot
 from GUI.outPrint import outPrint
 
 
+#战斗场景类
 class Graph(QGraphicsScene):
-    
+
+    #初始化
     def __init__(self,parent, width,  height):
         QGraphicsScene.__init__(self,  parent)
 
@@ -84,6 +86,8 @@ class Graph(QGraphicsScene):
         self.Parent.chooseAction()       
 
     #设置瓷砖的方法(设置贴图方法)
+
+    #设置战场贴图
     def setTiles(self):
 
         #background
