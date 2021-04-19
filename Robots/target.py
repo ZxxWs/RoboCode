@@ -44,16 +44,20 @@ class Target(Robot):
         
     def onRobotHit(self, robotId, robotName): # when My bot hit another
         pass
-        
+
+    #被其他机器人撞击
     def onHitByRobot(self, robotId, robotName):
         pass
 
+    #被子弹击中
     def onHitByBullet(self, bulletBotId, bulletBotName, bulletPower): #NECESARY FOR THE GAME
         pass
-        
+
+    #击中敌人
     def onBulletHit(self, botId, bulletId):#NECESARY FOR THE GAME
         pass
-        
+
+    #未击中敌人
     def onBulletMiss(self, bulletId):
         pass
         

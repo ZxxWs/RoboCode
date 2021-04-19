@@ -12,15 +12,21 @@ from robot import Robot
 from GUI.outPrint import outPrint
 
 
-#战斗场景类
+
+'''
+    战斗场景类
+    被MainWindow中的startBattle方法调用。
+    其作用是New一个战斗场景，并向其中添加机器人 
+
+'''
 class Graph(QGraphicsScene):
 
-    #初始化
+    #初始化战斗场景
     def __init__(self,parent, width,  height):
         QGraphicsScene.__init__(self,  parent)
 
         self.placeList=[]#排名列表
-        self.setSceneRect(0, 0, width, height)#QGraphicsScene中的方法
+        self.setSceneRect(0, 0, width, height)#设置战场尺寸
         self.Parent = parent
 
         self.width = width#设置战场的长宽
@@ -31,22 +37,27 @@ class Graph(QGraphicsScene):
 
     #被window.py的MainWindow的startBattle方法调用
     def AddRobots(self, botList):
+        '''
+            功能：向具体的场景中添加机器人
+        '''
 
         self.aliveBots = []#生存的机器人列表
         self.deadBots = []#死亡的机器人列表
         self.allBots=botList#所有的机器人，
         try:
+            #通过网格随机生成机器人出生点
             posList = random.sample(self.grid, len(botList))
             for bot in botList:
                 try:
-                    robot = bot(self.sceneRect().size(), self, str(bot))
+                    robot = bot(self.sceneRect().size(), self, str(bot))#此处是初始化一个具体的机器人
                     self.aliveBots.append(robot)
                     self.addItem(robot)#QGraphicsScene中的方法
                     robot.setPos(posList.pop())
-                    self.Parent.addRobotInfo(robot)#这个方法是window.py中的MainWindow类的方法
+                    self.Parent.addRobotInfo(robot)#这个方法是window.py中的MainWindow类的方法，向右侧的UI上添加机器人信息
                 except Exception as e:
                     print("Problem with bot file '{}': {}".format(bot, str(e)))
-            self.Parent.battleMenu.close()
+
+            self.Parent.battleMenu.close()#本行为废弃代码，但没删除
         except ValueError:
             QMessageBox.about(self.Parent, "Alert", "Too many Bots for the map's size!")
         except AttributeError:
@@ -66,7 +77,6 @@ class Graph(QGraphicsScene):
             self.placeList.append(repr(self.aliveBots[i]))
 
         self.Parent.allPlace.append(self.placeList)
-
 
 
         #统计战斗分数
@@ -131,10 +141,7 @@ class Graph(QGraphicsScene):
         bottom.name = 'bottom'
         self.addItem(bottom)
 
-
-
-    #获取网格函数，
-    #-----------------------------------------------------------------作用未知、、、、
+    #获取网格函数
     def getGrid(self):
         w = int(self.width/80)
         h = int(self.height/80)

@@ -269,7 +269,7 @@ class T800(Robot):  # Create a Robot
 #                    self.radarGoingAngle = (amax / abs(amax)) * min([5, abs(amax)])
                 else:
                     self.lookingForBot = self.angleMinBot
-#                   self.radarGoingAngle = (amin / abs(amin)) * min([5, abs(amin)])
+                    # self.radarGoingAngle = (amin / abs(amin)) * min([5, abs(amin)])
 
     def run(self):  # main loop to command the bot
         self.runcounter += 1
@@ -329,7 +329,6 @@ class T800(Robot):  # Create a Robot
                 missing.append(robot)
         for robot in missing:
             del self.enemies[robot]
-
 
     def onRobotHit(self, robotId, robotName):  # when My bot hit another
         pass

@@ -1,5 +1,5 @@
 #! /usr/bin/python
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 '''
 物理类
@@ -12,7 +12,6 @@
     self.currentList = []
     self.animation=动画类
     self.step-步长
-
 方法：
     __init__
     reverse
@@ -21,12 +20,10 @@
     clearAnimation
     reset
 '''
-
-
 class physics():
-    
+
     def __init__(self, animation):
-        
+
         self.move = []
         self.turn = []
         self.gunTurn = []
@@ -37,22 +34,25 @@ class physics():
 
         self.step = 5
 
-    #将动画类的列表翻转
+    # 将动画类的列表翻转，对列表 list 所有元素进行逆序排列
     def reverse(self):
-        self.animation.list.reverse()     
+        self.animation.list.reverse()
 
-    #设置新的动画
-    def newAnimation(self): 
+    # 设置新的动画
+    def newAnimation(self):
         currentList = self.makeAnimation()
         if currentList != []:
             self.animation.list.append(currentList)
             self.clearAnimation()
-        
 
-    #设置动画方法
-    def makeAnimation(self ,  a = None):
+    # 设置动画方法
+    def makeAnimation(self, a=None):
+        '''
 
-        for i in range(max(len(self.move), len(self.turn), len(self.gunTurn), len(self.radarTurn), len(self.fire) )):
+        :param a:
+        :return: 返回一个列表，列表中的元素为字典。
+        '''
+        for i in range(max(len(self.move), len(self.turn), len(self.gunTurn), len(self.radarTurn), len(self.fire))):
             try:
                 m = self.move[i]
             except IndexError:
@@ -73,12 +73,12 @@ class physics():
                 f = self.fire[i]
             except IndexError:
                 f = 0
-            self.currentList.append({"move": m, "turn": t, "gunTurn":g, "radarTurn":r, "fire":f})
-        #reverse()函数将currentList翻转。（第一个变为最后一个，最后一个变为第一个）
+            self.currentList.append({"move": m, "turn": t, "gunTurn": g, "radarTurn": r, "fire": f})
+        # reverse()函数将currentList翻转。（第一个变为最后一个，最后一个变为第一个）
         self.currentList.reverse()
         return self.currentList
 
-    #清空动画方法
+    # 清空动画方法
     def clearAnimation(self):
         self.move = []
         self.turn = []
@@ -87,7 +87,7 @@ class physics():
         self.fire = []
         self.currentList = []
 
-    #重置方法，调用清空动画，
+    # 重置方法，调用清空动画，
     def reset(self):
         self.clearAnimation()
         self.animation.list = []

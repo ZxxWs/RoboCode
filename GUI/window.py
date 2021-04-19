@@ -1,6 +1,6 @@
 import os, pickle
 
-from PyQt5.QtWidgets import QMainWindow, QGraphicsScene, QHeaderView, QTableWidgetItem
+from PyQt5.QtWidgets import QMainWindow, QGraphicsScene, QHeaderView, QTableWidgetItem, QMessageBox
 from PyQt5.QtCore import pyqtSlot, QTimer, Qt
 
 from DeBug import DeBug
@@ -43,6 +43,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.flashPlayData()
         self.__initUIStyle()
 
+
     #开始一大场战斗
     def setUpBattle(self, width, height, botList, battleCount):
 
@@ -73,10 +74,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def startBattle(self):
 
         try:
+            #将程序运行计时器重置
             self.timer.timeout.disconnect(self.scene.advance)
             '''
-            关于del:
-            由于python都是引用，而python有GC机制，所以，del语句作用在变量上，而不是数据对象上
+            关于del: 由于python都是引用，而python有GC机制，所以，del语句作用在变量上，而不是数据对象上
             '''
             del self.timer
             del self.scene
@@ -89,11 +90,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.labelBattleCount.setText("战斗次数：" + str(self.battledCount) + "/" + str(self.battleCount))  # 设置当下的战斗次数label
         self.sceneMenu = QGraphicsScene()  # sceneMenu为一个qt的场景对象
         self.graphicsView_2.setScene(self.sceneMenu)  # graphicsView_2是UI中的一个graphicsView类型控件，(右侧显示游戏细节信息的控件
-        self.scene = Graph(self, self.width, self.height)  # 设置场景的具体宽高
+        self.scene = Graph(self, self.width, self.height)  # 初始化一个战斗场景
         self.graphicsView.setScene(self.scene)  # 将场景填充到graphicsView控件中
         self.scene.AddRobots(self.botList)  # 此函数属于graph.py中graph类的方法，向战斗场景里添加机器人(图像
 
+        #将计时器和scene类中的advance方法绑定
         self.timer.timeout.connect(self.scene.advance)
+        #设置计时器的速度，start（）中的参数是指多长时间刷刷一次
         self.timer.start((self.horizontalSlider.value() ** 2) / 100.0)
         self.resizeEvent()
 
@@ -101,6 +104,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     #游戏速度条控制
     @pyqtSlot(int)
     def on_horizontalSlider_valueChanged(self, value):
+
         #可以理解为设置系统时间帧长
         self.timer.setInterval((value ** 2) / 100.0)
 
@@ -170,8 +174,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.gameCanStopTag = True
         pass
 
-    # ------------------------作用未知，被本类的startBattle方法最后一行调用
+    #本函数用于处理窗体大小发生变化后的事件。
     def resizeEvent(self, evt=None):
+        '''
+                重写了QWidget类中的resizeEvent方法
+                当QT运行时自动调用resize函数事件或者其他窗口控件大小发生变化产生resize事件。
+        假如你想拖动主窗口（或改变大小）的时候，能够让窗口中的组件随着窗口也能缩放的话，需要重写resizeEvent，原因在于，窗口构造结束之后，子窗口的大小就是固定的。而只有 resizeEvent 事件函数，可在此时获取到各控件正确的大小。
+        '''
         try:
             self.graphicsView.fitInView(self.scene.sceneRect(), 4)
         except:

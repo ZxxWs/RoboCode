@@ -21,7 +21,7 @@ print(type(pixmap))
 # 示例二：
 __author__ = 'liaojie'
 
-from PyQt5.QtWidgets import (QGraphicsView, QGraphicsScene, QApplication)
+from PyQt5.QtWidgets import (QGraphicsView, QGraphicsScene, QApplication, QMessageBox)
 
 
 class MainWindow(QGraphicsView):
@@ -58,7 +58,6 @@ if __name__ == '__main__':
 
     # 获取当前时间 格式：%Y.%m.%d %H:%M:%S
     print(time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time())))
-
     pass
 
 
