@@ -48,15 +48,6 @@ class BattleData(QDialog, Ui_BattleData):
 
         self.tableWidget.setCurrentCell(-1, 0)  # 不加此行时，表格在初始化的时候第一行会被选中（显示高亮
 
-    # def buttonOpen_clicked(self):
-    #
-    #     button = self.sender()
-    #
-    #     if button:
-    #         # 获取被点击的按钮的行数
-    #         row = self.tableWidget.indexAt(button.pos()).row()
-    #
-    #
 
     def buttonDel_clicked(self):
 

@@ -5,6 +5,7 @@ from PyQt5.QtCore import pyqtSlot, QTimer, Qt
 
 from DeBug import DeBug
 from GUI.battleData import BattleData
+from GUI.deleteRobot import DeleteRobot
 from GUI.openRobot import OpenRobot
 from Objects.graph import Graph
 from Ui_window import Ui_MainWindow
@@ -154,9 +155,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     # 打开机器人编辑功能
     @pyqtSlot()
     def on_actionOpen_triggered(self):
-
         self.openBot = OpenRobot(self)
         self.openBot.show()
+
+    # 打开机器人编辑功能
+    @pyqtSlot()
+    def on_actionDeleteRobot_triggered(self):
+        self.deleteBot = DeleteRobot(self)
+        self.deleteBot.show()
+
 
     # 暂停游戏按钮函数
     @pyqtSlot()

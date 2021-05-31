@@ -1,7 +1,7 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*-
 
-from robot import Robot
+from Objects.robot import Robot
 
 '''
 机器人模板类

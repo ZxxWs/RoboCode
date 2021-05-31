@@ -266,6 +266,7 @@
     </property>
     <addaction name="actionNew_2"/>
     <addaction name="actionOpen"/>
+    <addaction name="actionDeleteRobot"/>
    </widget>
    <addaction name="menuBattle"/>
    <addaction name="menuRobot"/>
@@ -302,6 +303,14 @@
    </property>
    <property name="toolTip">
     <string>删除战斗</string>
+   </property>
+  </action>
+  <action name="actionDeleteRobot">
+   <property name="text">
+    <string>删除机器人</string>
+   </property>
+   <property name="toolTip">
+    <string>删除机器人</string>
    </property>
   </action>
  </widget>
