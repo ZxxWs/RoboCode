@@ -7,6 +7,7 @@ import math
 
 '''
 一个靶子机器人 
+ 
 '''
 class Target(Robot):
 

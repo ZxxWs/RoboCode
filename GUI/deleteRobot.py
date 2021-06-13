@@ -5,7 +5,6 @@ from PyQt5.QtWidgets import QDialog
 
 from GUI.Ui_deleteRobot import Ui_deleteRobot
 from GUI.confirmAlert import ConfirmAlert
-from GUI.editor import Editor
 
 
 class DeleteRobot(QDialog, Ui_deleteRobot):
@@ -32,15 +31,13 @@ class DeleteRobot(QDialog, Ui_deleteRobot):
         ######################此处代码有缺陷：想做成文件名.类名。但只有文件名###################
         self.listWidget.addItems(botnames)
 
-    # 确认打开按钮函数
+    # 确认删除按钮函数
     @pyqtSlot()
     def on_pushButtonDelete_clicked(self):
 
         try:
             bot = self.listWidget.currentItem().text()  #
             self.__delRow = self.listWidget.currentRow()
-            # print(self.__row)
-            # print(os.getcwd() + "/Robots" + bot + '.py')
 
             # 删除弹框--------------------------------------
             tag = "确认删除" + bot + "机器人？"

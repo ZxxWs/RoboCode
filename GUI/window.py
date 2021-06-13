@@ -28,7 +28,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         QMainWindow.__init__(self, parent)
         self.setupUi(self)
-        self.battledCount = 0  # 已经战斗次数
         self.timer = QTimer()  # QTimer是Qt中的一个定时器类，参考文档：https://doc.qt.io/qtforpython-5/PySide2/QtCore/QTimer.html
 
         # tableWidget是计分面板控件
@@ -56,6 +55,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.height = height
         self.botList = botList
         self.battleCount = battleCount
+        self.battledCount = 0  # 已经战斗次数
 
         self.allPlace = []  # 统计排名的数据结构
         # self.allPlace.a

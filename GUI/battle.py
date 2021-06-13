@@ -4,7 +4,7 @@ import os
 import pickle
 import time
 
-from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QDialog, QMessageBox
 from PyQt5.QtCore import pyqtSlot, Qt
 
 from DeBug import DeBug
@@ -56,7 +56,7 @@ class Battle(QDialog, Ui_Dialog):
         for key in self.listBots.keys():
             # 向listWidget控件中添加机器人名字,其中key类型为字符串
             self.listWidget.addItem(key)
-            DeBug.debug(key, "battle", "__init__")
+            # DeBug.debug(key, "battle", "__init__")
 
     @pyqtSlot()
     # 添加机器人按钮函数
@@ -84,6 +84,11 @@ class Battle(QDialog, Ui_Dialog):
         for i in range(self.listWidget_2.count()):
             key = str(self.listWidget_2.item(i).text())
             botList.append(self.listBots[key])
+
+        if len(botList)<=1:
+            msg_box = QMessageBox(QMessageBox.Warning, '警告', '请选择两个或两个以上机器人')
+            msg_box.exec_()
+            return
 
         # 保存本次战斗，在开始游戏按钮中就执行保存游戏记录
         self.save(width, height, botList, battleCount)
